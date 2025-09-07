@@ -39,13 +39,23 @@ class handler(BaseHTTPRequestHandler):
                         }
                     )
                     
-                    urllib.request.urlopen(req)
-            
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(b'OK')
+                    response = urllib.request.urlopen(req)
+                    response_data = response.read().decode('utf-8')
+                    
+                    # Return success with details
+                    self.send_response(200)
+                    self.end_headers()
+                    self.wfile.write(f'SUCCESS: Created task "{task_name}" - ClickUp response: {response_data}'.encode())
+                else:
+                    self.send_response(200)
+                    self.end_headers()
+                    self.wfile.write(b'SKIPPED: No name provided')
+            else:
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(b'IGNORED: Not a row creation event')
             
         except Exception as e:
             self.send_response(500)
             self.end_headers()
-            self.wfile.write(f'Error: {str(e)}'.encode())
+            self.wfile.write(f'ERROR: {str(e)}'.encode())
