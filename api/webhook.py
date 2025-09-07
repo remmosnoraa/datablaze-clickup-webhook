@@ -16,8 +16,8 @@ class handler(BaseHTTPRequestHandler):
             if webhook_data.get('event_type') == 'rows.updated' and webhook_data.get('items'):
                 client = webhook_data['items'][0]
                 
-                # Only create task if "Add to ClickUp" is checked
-                if client.get('Add to ClickUp') == True:
+                # Only create task if "Add to Clickup" is checked
+                if client.get('Add to Clickup') == True:
                     # Handle null values properly
                     first_name = (client.get('First Name') or '').strip()
                     last_name = (client.get('Last Name') or '').strip()
