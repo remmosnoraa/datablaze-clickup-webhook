@@ -35,7 +35,7 @@ class handler(BaseHTTPRequestHandler):
                                 },
                                 {
                                     "id": "1c22edaa-ee48-46cd-8db1-a42b470aabb5",  # Phone #
-                                    "value": client.get('Phone #') or ''
+                                    "value": ''.join(filter(str.isdigit, client.get('Phone #') or ''))
                                 },
                                 {
                                     "id": "937d8889-5a9e-4ea8-bddb-239e9979c5e5",  # Email
