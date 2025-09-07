@@ -22,6 +22,8 @@ class handler(BaseHTTPRequestHandler):
                     first_name = (client.get('First Name') or '').strip()
                     last_name = (client.get('Last Name') or '').strip()
                     task_name = f"{first_name} {last_name}".strip()
+                    phone = ''.join(filter(str.isdigit, client.get('Phone #') or ''))
+                    formatted_phone = f"+1 {phone[:3]} {phone[3:6]} {phone[6:]}" if len(phone) == 10 else phone
                     
                     if task_name:
                         url = "https://api.clickup.com/api/v2/list/901102682453/task"
@@ -35,7 +37,7 @@ class handler(BaseHTTPRequestHandler):
                                 },
                                 {
                                     "id": "1c22edaa-ee48-46cd-8db1-a42b470aabb5",  # Phone #
-                                    "value": ''.join(filter(str.isdigit, client.get('Phone #') or ''))
+                                    "value": formatted_phone
                                 },
                                 {
                                     "id": "937d8889-5a9e-4ea8-bddb-239e9979c5e5",  # Email
