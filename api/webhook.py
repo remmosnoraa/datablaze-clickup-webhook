@@ -57,12 +57,20 @@ class handler(BaseHTTPRequestHandler):
                             }
                         )
                         
-                        response = urllib.request.urlopen(req)
-                        response_data = response.read().decode('utf-8')
-                        
-                        self.send_response(200)
-                        self.end_headers()
-                        self.wfile.write(f'SUCCESS: Created task "{task_name}" with custom fields'.encode())
+                        try:
+                            response = urllib.request.urlopen(req)
+                            response_data = response.read().decode('utf-8')
+                            
+                            self.send_response(200)
+                            self.end_headers()
+                            self.wfile.write(f'SUCCESS: Created task "{task_name}" with custom fields'.encode())
+    
+                        except urllib.error.HTTPError as e:
+                            error_body = e.read().decode('utf-8')
+                            self.send_response(500)
+                            self.end_headers()
+                            self.wfile.write(f'ERROR: {e.code} - {error_body}'.encode())
+                            
                     else:
                         self.send_response(200)
                         self.end_headers()
