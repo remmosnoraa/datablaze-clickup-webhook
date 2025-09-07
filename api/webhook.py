@@ -28,7 +28,24 @@ class handler(BaseHTTPRequestHandler):
                         
                         data = {
                             "name": task_name,
-                            "description": f"Email: {client.get('Email') or ''}\nPhone: {client.get('Phone #') or ''}"
+                            "custom_fields": [
+                                {
+                                    "id": "eff6a583-46d3-4da6-8bca-a6a183b528fa",  # LS File
+                                    "value": client.get('LS File') or ''
+                                },
+                                {
+                                    "id": "1c22edaa-ee48-46cd-8db1-a42b470aabb5",  # Phone #
+                                    "value": client.get('Phone #') or ''
+                                },
+                                {
+                                    "id": "937d8889-5a9e-4ea8-bddb-239e9979c5e5",  # Email
+                                    "value": client.get('Email') or ''
+                                },
+                                {
+                                    "id": "4bd4deaa-fbc8-4086-85ca-f0c803a34a4e",  # LS Email
+                                    "value": client.get('LS Email') or ''
+                                }
+                            ]
                         }
                         
                         req = urllib.request.Request(
@@ -45,7 +62,7 @@ class handler(BaseHTTPRequestHandler):
                         
                         self.send_response(200)
                         self.end_headers()
-                        self.wfile.write(f'SUCCESS: Created task "{task_name}"'.encode())
+                        self.wfile.write(f'SUCCESS: Created task "{task_name}" with custom fields'.encode())
                     else:
                         self.send_response(200)
                         self.end_headers()
@@ -53,7 +70,7 @@ class handler(BaseHTTPRequestHandler):
                 else:
                     self.send_response(200)
                     self.end_headers()
-                    self.wfile.write(b'SKIPPED: Add to ClickUp not checked')
+                    self.wfile.write(b'SKIPPED: Add to Clickup not checked')
             else:
                 self.send_response(200)
                 self.end_headers()
