@@ -30,6 +30,7 @@ class handler(BaseHTTPRequestHandler):
                         
                         data = {
                             "name": task_name,
+                            "description": client.get('Assignment Description') or '', # Assignment Description
                             "custom_fields": [
                                 {
                                     "id": "eff6a583-46d3-4da6-8bca-a6a183b528fa",  # LS File
