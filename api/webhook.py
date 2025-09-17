@@ -33,6 +33,14 @@ class handler(BaseHTTPRequestHandler):
                             "description": client.get('Assignment Description') or '', # Assignment Description
                             "custom_fields": [
                                 {
+                                    "id": "cc2c56d8-5bd6-47c3-ae15-b53e1b4d186d",
+                                    "value": first_name  # First Name
+                                },
+                                {
+                                    "id": "6bddcd8d-3d19-4ed1-8159-8f7a47ea5ed1",
+                                    "value": last_name  # Last Name
+                                },                                
+                                {
                                     "id": "eff6a583-46d3-4da6-8bca-a6a183b528fa",  # LS File
                                     "value": client.get('LS File') or ''
                                 },
