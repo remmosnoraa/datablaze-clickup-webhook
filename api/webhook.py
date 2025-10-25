@@ -74,26 +74,23 @@ class handler(BaseHTTPRequestHandler):
         cleaned = {
             "Last Name": client.get('Last Name') or '',
             "First Name": client.get('First Name') or '',
+            "LS File": client.get('LS File') or '',
             "LS Email": client.get('LS Email') or '',
             "Phone #": client.get('Phone #') or '',
             "Email": client.get('Email') or '',
             "Open Date": client.get('Open Date'),
+            "CASEWORK": client.get('CASEWORK') or '',
             "Assignment Description": client.get('Assignment Description') or ''
         }
 
         # Add optional fields only if they exist, flattening nested objects
         optional_fields = [
             'Appeal Progression',
-            'CASEWORK',
-            'Honorific',
-            'Pronoun (obj.)',
-            'Pronoun (possessive)',
             'Referee Name',
             'Docket No(s).',
             'Decision Date',
             'Hearing Date/Time',
             'RD Section(s) of Law',
-            'LS File',
             'SSN Last 4',
             'Web Sign'
         ]
