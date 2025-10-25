@@ -13,6 +13,6 @@
     }
   ],
   "env": {
-    "MOTION_WEBHOOK_URL": "@motion_webhook_url"
+    "MOTION_WEBHOOK_URL": "https://webhooks.usemotion.com/agent-webhook/agent_workflow/aaw_AhrfktoswbcJguPr8jvnP5"
   }
 }
