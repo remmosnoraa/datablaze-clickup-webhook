@@ -38,7 +38,9 @@ class handler(BaseHTTPRequestHandler):
 
                         self.send_response(200)
                         self.end_headers()
-                        self.wfile.write(f'SUCCESS: Forwarded to Motion - {cleaned_data.get("First Name")} {cleaned_data.get("Last Name")}'.encode())
+                        # Include the payload in the response for debugging
+                        response_msg = f'SUCCESS: Forwarded to Motion - {cleaned_data.get("First Name")} {cleaned_data.get("Last Name")}\n\nPayload sent:\n{json.dumps(cleaned_data, indent=2)}'
+                        self.wfile.write(response_msg.encode())
 
                     except urllib.error.HTTPError as e:
                         error_body = e.read().decode('utf-8')
