@@ -21,6 +21,11 @@ class handler(BaseHTTPRequestHandler):
                     # Clean and flatten the data for Motion
                     cleaned_data = self._clean_client_data(client)
 
+                    # Wrap in items array to match Motion's filter expectation
+                    motion_payload = {
+                        "items": [cleaned_data]
+                    }
+
                     # Forward to Motion's webhook
                     motion_url = os.environ.get('MOTION_WEBHOOK_URL')
                     if not motion_url:
@@ -28,7 +33,7 @@ class handler(BaseHTTPRequestHandler):
 
                     req = urllib.request.Request(
                         motion_url,
-                        data=json.dumps(cleaned_data).encode('utf-8'),
+                        data=json.dumps(motion_payload).encode('utf-8'),
                         headers={'Content-Type': 'application/json'}
                     )
 
@@ -39,7 +44,7 @@ class handler(BaseHTTPRequestHandler):
                         self.send_response(200)
                         self.end_headers()
                         # Include the payload in the response for debugging
-                        response_msg = f'SUCCESS: Forwarded to Motion - {cleaned_data.get("First Name")} {cleaned_data.get("Last Name")}\n\nPayload sent:\n{json.dumps(cleaned_data, indent=2)}'
+                        response_msg = f'SUCCESS: Forwarded to Motion - {cleaned_data.get("First Name")} {cleaned_data.get("Last Name")}\n\nPayload sent:\n{json.dumps(motion_payload, indent=2)}'
                         self.wfile.write(response_msg.encode())
 
                     except urllib.error.HTTPError as e:
@@ -81,9 +86,13 @@ class handler(BaseHTTPRequestHandler):
             "Phone #": client.get('Phone #') or '',
             "Email": client.get('Email') or '',
             "Open Date": client.get('Open Date'),
-            "CASEWORK": client.get('CASEWORK') or '',
             "Assignment Description": client.get('Assignment Description') or ''
         }
+
+        # Add CASEWORK if it exists, flattening it
+        casework_value = get_value(client.get('CASEWORK'))
+        if casework_value:
+            cleaned["CASEWORK"] = casework_value
 
         # Add optional fields only if they exist, flattening nested objects
         optional_fields = [
